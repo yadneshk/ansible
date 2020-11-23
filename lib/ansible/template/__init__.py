@@ -897,7 +897,16 @@ class Templar:
                             disable_lookups=disable_lookups,
                         )
                     else:
-                        d[k] = variable[k]
+                        if isinstance(variable, Mapping):
+                            d[k] = self.template(
+                                variable[k],
+                                preserve_trailing_newlines=preserve_trailing_newlines,
+                                fail_on_undefined=fail_on_undefined,
+                                overrides=overrides,
+                                disable_lookups=disable_lookups,
+                            )
+                        else:
+                            d[k] = variable[k]
                 return d
             else:
                 return variable
